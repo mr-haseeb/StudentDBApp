@@ -13,9 +13,11 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     DatabaseHelper studentDB;
 
-    EditText editTextName,editTextFatherName,editTextAge,editTextAddress,editTextPhoneNumner;
+    EditText editTextId,editTextName,editTextFatherName,editTextAge,editTextAddress,editTextPhoneNumner;
     Button btnAddData;
     Button btnViewAll;
+    Button btnViewUpdate;
+    Button btnViewDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,15 +25,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         studentDB= new DatabaseHelper(this);
 
-        editTextName=findViewById(R.id.editTextName);
-        editTextFatherName=findViewById(R.id.editTextFatherName);
-        editTextAge=findViewById(R.id.editTextAge);
-        editTextAddress=findViewById(R.id.editTextAddress);
-        editTextPhoneNumner=findViewById(R.id.editTextPhoneNumber);
-        btnAddData=findViewById(R.id.btnAddData);
-        btnViewAll=findViewById(R.id.btnViewAll);
+        editTextId=(EditText)findViewById(R.id.editTextId);
+        editTextName=(EditText) findViewById(R.id.editTextName);
+        editTextFatherName=(EditText) findViewById(R.id.editTextFatherName);
+        editTextAge=(EditText) findViewById(R.id.editTextAge);
+        editTextAddress=(EditText) findViewById(R.id.editTextAddress);
+        editTextPhoneNumner=(EditText) findViewById(R.id.editTextPhoneNumber);
+        btnAddData=(Button) findViewById(R.id.btnAddData);
+        btnViewAll=(Button) findViewById(R.id.btnViewAll);
+        btnViewUpdate=(Button) findViewById(R.id.btnUpdateData);
+        btnViewDelete=(Button)findViewById(R.id.btnDelete);
+
+
         AddData();
         ViewAll();
+        UpdateData();
+        deleteData();
+
+
 
     }
 
@@ -78,12 +89,50 @@ public class MainActivity extends AppCompatActivity {
                         editTextAge.getText().toString(),
                         editTextAddress.getText().toString(),
                         editTextPhoneNumner.getText().toString());
-                if(isInserted=true){
+                if(isInserted==true){
                     Toast.makeText(MainActivity.this,"Data Inserted ",Toast.LENGTH_LONG).show();
 
                 }
                 else{
                     Toast.makeText(MainActivity.this,"Data not Inserted ",Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
+    }
+    public void UpdateData(){
+        btnViewUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isUpdated = studentDB.updateData(
+                        editTextId.getText().toString(),
+                        editTextName.getText().toString(),
+                        editTextFatherName.getText().toString(),
+                        editTextAge.getText().toString(),
+                        editTextAddress.getText().toString(),
+                        editTextPhoneNumner.getText().toString());
+                if(isUpdated==true){
+                    Toast.makeText(MainActivity.this,"Data is Udated ",Toast.LENGTH_LONG).show();
+
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"Data is not Updated ",Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
+    }
+    public void deleteData(){
+        btnViewDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer deleteRows=studentDB.deleteData(editTextId.getText().toString());
+                if(deleteRows > 0){
+                    Toast.makeText(MainActivity.this,"Data Deleted",Toast.LENGTH_LONG).show();
+
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"Data not Deleted ",Toast.LENGTH_LONG).show();
 
                 }
             }
